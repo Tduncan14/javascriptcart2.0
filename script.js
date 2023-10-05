@@ -36,15 +36,34 @@ console.log(li)
 const button = createButton('remove-item btn-link text-red');
 li.appendChild(button)
 itemList.appendChild(li)
+
+addItemStorage(newItem)
 checkUI()
 itemInput.value =''
+}
 
 
+function displayItems(){
+    const itemsFromStorage = getItemsFromStorage();
+    itemsFromStorage.forEach(item =>  addItemToDOM(item))
+    checkUI()
 
 }
 
 
+function addItemToDOM(newItem){
+    const li = document.createElement('li')
 
+li.appendChild(document.createTextNode(newItem))
+
+
+console.log(li)
+
+
+const button = createButton('remove-item btn-link text-red');
+li.appendChild(button)
+itemList.appendChild(li)
+}
 
 function createButton(classes){
     const button = document.createElement('button');
@@ -67,7 +86,6 @@ function createIcon(classes){
 
 }
 
-
 function removeItem(e){
 
     if(e.target.parentElement.classList.contains('remove-item')){
@@ -78,7 +96,6 @@ function removeItem(e){
     }
 
 }
-
 
 function clearItems(){
 
@@ -110,7 +127,6 @@ function checkUI(){
     }
 
 }
-
 
 function filterWord(e){
     // get the tesxt that being text
@@ -146,17 +162,15 @@ function filterWord(e){
 
 
 function addItemStorage(item){
-    let itemsFromStorage;
+    const itemsFromStorage = getItemsFromStorage()
 
 
-    if(localStorage.getItem('items') === null){
-        itemsFromStorage = []
-    }
-    else{
-        itemsFromStorage = JSON.parse(localStorage.getItem('items'))
-    }
-
-
+    // if(localStorage.getItem('items') === null){
+    //     itemsFromStorage = []
+    // }
+    // else{
+    //     itemsFromStorage = JSON.parse(localStorage.getItem('items'))
+    // }
 
     // add to new item to array
     itemsFromStorage.push(item)
@@ -168,15 +182,51 @@ function addItemStorage(item){
 
 
 
+function getItemsFromStorage(){
+    let itemsFromStorage;
+
+    if(localStorage.getItem('items') === null){
+        itemsFromStorage = [];
+    }
+    else{
+        itemsFromStorage = JSON.parse(localStorage.getItem('items'))
+    }
+
+    return itemsFromStorage;
+
+}
+
+
+
 
 
 // EVENT LISTENER
 
+
+// initalize scope
+function init(){
+    
 itemForm.addEventListener('submit',addItem)
 itemList.addEventListener('click',removeItem)
 itemFilter.addEventListener('input',filterWord)
 
 clearButton.addEventListener('click',clearItems)
+document.addEventListener('DOMContentLoaded',displayItems)
 
 
 checkUI()
+
+}
+
+// global scope
+// itemForm.addEventListener('submit',addItem)
+// itemList.addEventListener('click',removeItem)
+// itemFilter.addEventListener('input',filterWord)
+
+// clearButton.addEventListener('click',clearItems)
+// document.addEventListener('DOMContentLoaded',displayItems)
+
+
+// checkUI()
+
+init()
