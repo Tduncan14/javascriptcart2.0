@@ -36,6 +36,12 @@ if(isEditMode){
    
     //  const
 }
+else{
+   if (checkIfItemExist(newItem)){
+    alert('That item already exist')
+    return
+}
+}
 
 
 
@@ -182,6 +188,10 @@ function clearItems(){
 
 
 function checkUI(){
+
+    itemInput.value = ''
+
+
     const items = itemList.querySelectorAll('li')
 
     if(items.length === 0){
@@ -195,6 +205,12 @@ function checkUI(){
         itemFilter.style.display = 'block'
     }
 
+
+    formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+    formBtn.style.backgroundColor='#333';
+
+
+    isEditMode = false
 }
 
 function filterWord(e){
@@ -262,6 +278,22 @@ function getItemsFromStorage(){
     }
 
     return itemsFromStorage;
+
+}
+
+
+
+function checkIfItemExist(item){
+    const itemsFromStorage = getItemsFromStorage()
+
+    if(itemsFromStorage.includes(item)){
+        return true
+    }
+    else{
+        return false
+    }
+
+
 
 }
 
