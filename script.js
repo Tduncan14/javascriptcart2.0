@@ -86,14 +86,41 @@ function createIcon(classes){
 
 }
 
-function removeItem(e){
 
+function onClickItem(e){
     if(e.target.parentElement.classList.contains('remove-item')){
-     
-    if(confirm('Are you sure')){
-        e.target.parentElement.parentElement.remove()}
-        checkUI()
+        removeItem(e.target.parentElement.parentElement)
     }
+
+}
+
+
+function removeItemFromStorage(item){
+    let itemsFromStorage = getItemsFromStorage()
+
+    // filter out item to be removed
+    itemsFromStorage = itemsFromStorage.filter((i ) =>  i !== item)
+    // reset to local storage
+
+    localStorage.setItem('items',JSON.stringify(itemsFromStorage));
+}
+
+function removeItem(item){
+
+    if(confirm('Are you sure')){
+        // remove item from Dom and storage
+        item.remove()
+        checkUI()
+
+        removeItemFromStorage(item.textContent)
+    }
+
+    // if(e.target.parentElement.classList.contains('remove-item')){
+     
+    // if(confirm('Are you sure')){
+    //     e.target.parentElement.parentElement.remove()}
+    //     checkUI()
+    // }
 
 }
 
@@ -103,12 +130,17 @@ function clearItems(){
 
    while(itemList.firstChild){
        itemList.removeChild(itemList.firstChild)
-       checkUI()
    }
+   localStorage.removeItems('items')
+   checkUI()
 
     console.log('click')
 
 }
+
+
+
+
 
 
 
@@ -207,7 +239,7 @@ function getItemsFromStorage(){
 function init(){
     
 itemForm.addEventListener('submit',addItem)
-itemList.addEventListener('click',removeItem)
+itemList.addEventListener('click',onClickItem)
 itemFilter.addEventListener('input',filterWord)
 
 clearButton.addEventListener('click',clearItems)
